@@ -1,5 +1,7 @@
 'use strict';
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
@@ -48,7 +50,9 @@ var media = function media(bp) {
   };
 };
 var joinObj = function joinObj(acc, obj) {
-  return Object.assign(acc, obj);
+  return Object.assign(acc, Object.keys(obj).reduce(function (result, key) {
+    return Object.assign(result, _defineProperty({}, key, _typeof(acc[key]) === 'object' && _typeof(obj[key]) === 'object' ? [acc[key], obj[key]].reduce(joinObj, {}) : obj[key]));
+  }, {}));
 };
 
 module.exports = {
